@@ -166,6 +166,27 @@ app.delete('/occurrence/:id', async (req, res) => {
   }
 });
 
+// --- ROTA DE ATUALIZAR PERFIL ---
+app.put('/user/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, email, phone } = req.body;
+
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: { 
+        name,
+        email, 
+        phone 
+      }
+    });
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Erro ao atualizar perfil:", error);
+    res.status(500).json({ error: "Erro ao atualizar perfil" });
+  }
+});
+
 app.listen(8000, '0.0.0.0', () => {
   console.log('🚀 Servidor rodando em http://localhost:8000');
 });
